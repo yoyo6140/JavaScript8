@@ -4,12 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stopwatch</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #display {
+            font-size: 60px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            background-color: #4c4c4c;
+            color: white;
+        }
+        #reset {
+            background-color: #f44336;
+        }
+    </style>
 </head>
 <body>
     <div id="display">00:00:00</div>
-    <button id="start">開始</button>
-    <button id="pause">暫停</button>
-    <button id="reset">歸零</button>
+    <div>
+        <button id="start">開始</button>
+        <button id="pause">暫停</button>
+        <button id="reset">歸零</button>
+    </div>
 
 
     <script>
