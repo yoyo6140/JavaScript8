@@ -6,7 +6,7 @@
     <title>Document</title>
 
     <style>
-        
+
         body {
         font-family: sans-serif;
         max-width: 800px;
@@ -87,7 +87,7 @@
 <body>
     <h1>📝 簡易筆記本</h1>
 
-    <textarea  id="note-area" placeholder="請出入你的筆記..."></textarea>
+    <textarea  id="note-area" placeholder="請輸入你的筆記..."></textarea>
 
     <div class="toolbar">
         <button id="create-button" class="create-button">➕ 建立新筆記</button>
@@ -127,7 +127,7 @@
             noteListEl.innerHTML = '';
             notes.forEach(note => {
                 const item = document.createElement('div')
-                item.className = 'note-item' + (note.id === currentNoteId ? 'active' : '');
+                item.className = 'note-item' + (note.id === currentNoteId ? ' active' : '');
 
                 const titleBtn = document.createElement('button')
                 titleBtn.className = 'note-title'
