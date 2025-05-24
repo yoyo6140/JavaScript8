@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@latest/main.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.20/build/jquery.datetimepicker.min.css"/>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        input {
+            width: 300px;
+            height: 40px;
+        }
+
+        #addEventBtn {
+            width: 100px;
+            height: 40px;
+            font-size: 20px;
+            font-weight: 800;
+            border-radius: 8px;
+        }
+        
+        #eventForm {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+        }
+        #calendar {
+            max-width: 900px;
+            margin-top: 30px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>簡易行事曆</h1>
+    <div id="eventForm">
+        <input type="text" id="eventTitle" placeholder="請輸入活動名稱">
+        <input type="text" id="eventDateTime" placeholder="選擇活動時間">
+        <button id="addEventBtn">新增活動</button>
+    </div>
+    <div id="calendar"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-datetimepicker@2.5.20/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script>
+        $(function() {
+            $('#eventDateTime').datetimepicker({
+                format:'Y-m-d H:i'
+            });
+        }); //在選擇時間的位置 加入日歷套件
+
+        const calendarEl = document.getElementById('calendar');
+        //取得 顯示日曆活動的html
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView : 'dayGridMonth',
+            events: loadEvents(), //帶入內存的資料
+            eventClick: function(info) {
+                if (confirm(`是否刪除活動 :"${info.event.title}"?`)) {
+                    info.event.remove();
+                    deleteEvent(info.event.id);
+                }
+            }
+        });
+
+        calendar.render();
+        document.getElementById('addEventBtn').addEventListener('click', function() {
+            const title = document.getElementById('eventTitle').value.trim();
+            const dateTime = document.getElementById('eventDateTime').value;
+            if (!title || !dateTime ) {
+                alert('請填寫活動名稱與時間');
+                return;
+            }
+
+            const id = 'event_' + new Date().getTime();
+            const eventData = {
+                id: id,
+                title: title,
+                start: dateTime
+            };
+            calendar.addEvent(eventData);
+            saveEvent(eventData);
+
+            document.getElementById('eventTitle').value = '';
+            document.getElementById('eventDateTime').value = '';
+        });
+
+        function saveEvent(event) {
+            const events = JSON.parse(localStorage.getItem('events') || '[]');
+            events.push(event);
+            localStorage.setItem('events', JSON.stringify(events));
+        }
+
+        function loadEvents() {
+            return JSON.parse(localStorage.getItem('events') || '[]');
+        }
+
+        function deleteEvent(id) {
+            let events = JSON.parse(localStorage.getItem('events') || '[]');
+            events = events.filter(e => e.id !== id);
+            localStorage.setItem('events', JSON.stringify(events));
+        }
+    </script>
+  
+
+    
+</body>
+</html>
